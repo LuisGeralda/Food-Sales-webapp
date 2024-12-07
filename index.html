@@ -1,0 +1,62 @@
+<!-- File: index.html -->
+<!-- Location: frontend/ -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Food Sales Analysis</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Food Sales Analysis</h1>
+
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <label for="start-date">Start Date:</label>
+            <input type="date" id="start-date">
+            <label for="end-date">End Date:</label>
+            <input type="date" id="end-date">
+
+            <label for="city">City:</label>
+            <select id="city">
+                <option value="">All Cities</option>
+            </select>
+
+            <label for="category">Category:</label>
+            <select id="category">
+                <option value="">All Categories</option>
+            </select>
+
+            <button onclick="fetchData()">Filter</button>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-section">
+            <div class="table-wrapper">
+                <table id="results-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Date</th>
+                            <th>Region</th>
+                            <th>City</th>
+                            <th>Category</th>
+                            <th>Product</th>
+                            <th>Qty</th>
+                            <th>Unit Price</th>
+                            <th>Total Price</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <!-- Results will be dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
