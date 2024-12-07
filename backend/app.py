@@ -13,7 +13,7 @@ except FileNotFoundError:
     df = None
     print("Error: Excel file not found. Ensure 'sampledatafoodsales_analysis.xlsx' is in the correct path.")
 
-@app.route('frontend/')
+@app.route('/frontend/')
 def serve_frontend():
     # Serve the index.html file from the frontend folder
     return send_from_directory(app.static_folder, 'index.html')
