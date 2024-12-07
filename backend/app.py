@@ -3,7 +3,7 @@ from flask_cors import CORS
 import pandas as pd
 import os
 
-app = Flask(__name__, static_folder='frontend')
+app = Flask(__name__, static_folder='frontend')  # Configure Flask to serve static files from the 'frontend' folder
 CORS(app)
 
 # Load Excel data
@@ -13,10 +13,15 @@ except FileNotFoundError:
     df = None
     print("Error: Excel file not found. Ensure 'sampledatafoodsales_analysis.xlsx' is in the correct path.")
 
-@app.route('/frontend/')
+@app.route('/')
 def serve_frontend():
-    # Serve the index.html file from the frontend folder
+    # Serve the main frontend page (index.html)
     return send_from_directory(app.static_folder, 'index.html')
+
+@app.route('/<path:path>')
+def serve_static_files(path):
+    # Serve other static files such as styles.css and script.js
+    return send_from_directory(app.static_folder, path)
 
 @app.route('/filter', methods=['GET'])
 def filter_data():
