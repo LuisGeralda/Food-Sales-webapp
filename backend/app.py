@@ -1,16 +1,24 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import pandas as pd
+import os
 
 app = Flask(__name__)
 CORS(app)
 
 # Load Excel data
-# Update this file path to point to the actual file location on your system
-df = pd.read_excel('backend/sampledatafoodsales_analysis.xlsx', sheet_name='FoodSales')
+try:
+    # Ensure the path matches the deployment directory structure
+    df = pd.read_excel('backend/sampledatafoodsales_analysis.xlsx', sheet_name='FoodSales')
+except FileNotFoundError:
+    df = None
+    print("Error: Excel file not found. Ensure 'sampledatafoodsales_analysis.xlsx' is in the correct path.")
 
 @app.route('/filter', methods=['GET'])
 def filter_data():
+    if df is None:
+        return jsonify({"error": "Data not loaded. Ensure the Excel file is present."}), 500
+
     start_date = request.args.get('start_date')
     end_date = request.args.get('end_date')
     city = request.args.get('city')
@@ -34,10 +42,15 @@ def filter_data():
 
 @app.route('/unique-values', methods=['GET'])
 def unique_values():
+    if df is None:
+        return jsonify({"error": "Data not loaded. Ensure the Excel file is present."}), 500
+
     # Fetch unique values for City and Category columns for dropdown options
     unique_cities = df['City'].dropna().unique().tolist()
     unique_categories = df['Category'].dropna().unique().tolist()
     return jsonify({'cities': unique_cities, 'categories': unique_categories})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Bind to the correct host and port for Render
+    port = int(os.environ.get('PORT', 5000))  # Get port from environment variable or use 5000 for local testing
+    app.run(host='0.0.0.0', port=port, debug=True)
