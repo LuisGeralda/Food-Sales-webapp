@@ -2,7 +2,7 @@
 // Location: frontend/
 
 async function loadDropdownOptions() {
-    const response = await fetch('http://127.0.0.1:5000/unique-values');
+    const response = await fetch('https://your-app-name.onrender.com/unique-values'); // Update this URL
     const data = await response.json();
 
     const cityDropdown = document.getElementById('city');
@@ -28,7 +28,7 @@ async function fetchData() {
     const city = document.getElementById('city').value;
     const category = document.getElementById('category').value;
 
-    const response = await fetch(`http://127.0.0.1:5000/filter?start_date=${startDate}&end_date=${endDate}&city=${city}&category=${category}`);
+    const response = await fetch(`https://your-app-name.onrender.com/filter?start_date=${startDate}&end_date=${endDate}&city=${city}&category=${category}`); // Update this URL
     const data = await response.json();
 
     const tableBody = document.getElementById('table-body');
