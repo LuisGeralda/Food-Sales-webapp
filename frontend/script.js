@@ -2,7 +2,7 @@
 // Location: frontend/
 
 async function loadDropdownOptions() {
-    const response = await fetch('https://food-sales-webapp.onrender.com/unique-values'); // Update this URL
+    const response = await fetch('https://food-sales-webapp.onrender.com/unique-values'); 
     const data = await response.json();
 
     const cityDropdown = document.getElementById('city');
@@ -28,11 +28,11 @@ async function fetchData() {
     const city = document.getElementById('city').value;
     const category = document.getElementById('category').value;
 
-    const response = await fetch(`https://food-sales-webapp.onrender.com/filter?start_date=${startDate}&end_date=${endDate}&city=${city}&category=${category}`); // Update this URL
+    const response = await fetch(`https://food-sales-webapp.onrender.com/filter?start_date=${startDate}&end_date=${endDate}&city=${city}&category=${category}`); 
     const data = await response.json();
 
     const tableBody = document.getElementById('table-body');
-    tableBody.innerHTML = "";  // Clear previous results
+    tableBody.innerHTML = "";  
 
     data.forEach(row => {
         const tr = document.createElement('tr');
