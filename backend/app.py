@@ -5,7 +5,7 @@ import os
 import logging
 
 # Configure the Flask app
-app = Flask(__name__, static_folder='frontend')  # Serve static files from 'frontend' folder
+app = Flask(__name__, static_folder='frontend')  # Set static folder to 'frontend'
 CORS(app)
 
 # Configure logging
@@ -22,14 +22,19 @@ except FileNotFoundError:
 
 @app.route('/')
 def serve_frontend():
-    logger.info("Serving index.html for the root URL.")
     # Serve the main frontend page (index.html)
+    index_path = os.path.join(app.static_folder, 'index.html')
+    logger.info(f"Looking for index.html at: {index_path}")
+    if not os.path.exists(index_path):
+        logger.error("index.html not found!")
+        return "index.html file not found", 404
+    logger.info("Serving index.html for the root URL.")
     return send_from_directory(app.static_folder, 'index.html')
 
 @app.route('/<path:path>')
 def serve_static_files(path):
-    logger.info(f"Serving static file: {path}")
     # Serve other static files such as styles.css and script.js
+    logger.info(f"Serving static file: {path}")
     return send_from_directory(app.static_folder, path)
 
 @app.route('/filter', methods=['GET'])
@@ -75,7 +80,18 @@ def unique_values():
     logger.info(f"Unique values fetched - Cities: {len(unique_cities)}, Categories: {len(unique_categories)}")
     return jsonify({'cities': unique_cities, 'categories': unique_categories})
 
+# Debug route to verify files in the frontend folder
+@app.route('/debug-files')
+def debug_files():
+    try:
+        static_files = os.listdir(app.static_folder)
+        logger.info(f"Files in static folder: {static_files}")
+        return jsonify(static_files)
+    except Exception as e:
+        logger.error(f"Error accessing static folder: {str(e)}")
+        return jsonify({"error": str(e)}), 500
+
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
+    port = int(os.environ.get('PORT', 5000))  # Get the port from the environment or use 5000
     logger.info(f"Starting the app on port {port}")
     app.run(host='0.0.0.0', port=port, debug=True)
