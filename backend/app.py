@@ -5,7 +5,7 @@ import os
 import logging
 
 # Configure the Flask app
-app = Flask(__name__, static_folder='frontend')  # Set static folder to 'frontend'
+app = Flask(__name__, static_folder='../frontend')  # Corrected path to 'frontend'
 CORS(app)
 
 # Configure logging
