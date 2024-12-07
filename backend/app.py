@@ -1,18 +1,22 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import pandas as pd
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='frontend')
 CORS(app)
 
 # Load Excel data
 try:
-    # Ensure the path matches the deployment directory structure
     df = pd.read_excel('backend/sampledatafoodsales_analysis.xlsx', sheet_name='FoodSales')
 except FileNotFoundError:
     df = None
     print("Error: Excel file not found. Ensure 'sampledatafoodsales_analysis.xlsx' is in the correct path.")
+
+@app.route('/')
+def serve_frontend():
+    # Serve the index.html file from the frontend folder
+    return send_from_directory(app.static_folder, 'index.html')
 
 @app.route('/filter', methods=['GET'])
 def filter_data():
@@ -51,6 +55,5 @@ def unique_values():
     return jsonify({'cities': unique_cities, 'categories': unique_categories})
 
 if __name__ == '__main__':
-    # Bind to the correct host and port for Render
-    port = int(os.environ.get('PORT', 5000))  # Get port from environment variable or use 5000 for local testing
+    port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
