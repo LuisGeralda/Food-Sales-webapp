@@ -7,7 +7,7 @@ CORS(app)
 
 # Load Excel data
 # Update this file path to point to the actual file location on your system
-df = pd.read_excel('sampledatafoodsales_analysis.xlsx', sheet_name='FoodSales')
+df = pd.read_excel('backend/sampledatafoodsales_analysis.xlsx', sheet_name='FoodSales')
 
 @app.route('/filter', methods=['GET'])
 def filter_data():
